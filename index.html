@@ -1,88 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V02LGJEFMF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-V02LGJEFMF');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6516494353796408"
-     crossorigin="anonymous"></script>
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V02LGJEFMF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V02LGJEFMF');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6516494353796408" crossorigin="anonymous"></script>
 
     <meta charset="UTF-8">
-    <meta name="google-adsense-account" content="ca-pub-6516494353796408">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ModernConvert - Free AVIF & WebP Converter</title>
-    <meta name="description" content="Convert images to AVIF, WebP formats for free. 100% private, no upload required. Client-side processing.">
+    <title>ModernConvert - Free Image Converter | AVIF, WebP, JPEG</title>
+    <meta name="description" content="Convert images to modern formats like AVIF and WebP for free. 100% private - no uploads required. Works in your browser.">
+    
+    <!-- Clean, modern font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-
 </head>
 <body>
-    <div class="container">
-        <header>
-    <h1>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="brand">
+                    
+                        <h1>
   <img src="logo.png" alt="ModernConvert" style="height: 40px; vertical-align: middle;">
   ModernConvert
 </h1>
-    <p>Free Image Format Converter - 100% Private</p>
-    <nav style="margin: 20px 0;">
-        <a href="/" style="color: white; margin: 0 15px;">Home</a>
-        <a href="/about.html" style="color: white; margin: 0 15px;">About</a>
-        <a href="/privacy.html" style="color: white; margin: 0 15px;">Privacy</a>
-        <a href="/terms.html" style="color: white; margin: 0 15px;">Terms</a>
-    </nav>
-    <!-- Ad space -->
-    <div class="ad-banner">Ad Space - Coming Soon</div>
-</header>
+                </div>
+                <nav class="nav">
+                    <a href="/index.html">Home</a>
+<a href="/about.html">About</a>
+<a href="/privacy.html">Privacy</a>
+<a href="/terms.html">Terms</a>
+                </nav>
+            </div>
+        </header>
 
-        <main>
-            <div class="converter-box">
-                <div id="drop-zone" class="drop-zone">
-                    <div class="drop-content">
-                        <div class="upload-icon">📁</div>
-                        <p>Drag & drop your images here</p>
-                        <p class="or">or</p>
-                        <button onclick="document.getElementById('file-input').click()">
-                            Choose Files
-                        </button>
-                        <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+        <!-- Hero Section -->
+        <main class="main">
+            <div class="container">
+                <div class="hero">
+                    <h2 class="hero-title">Convert Images to Modern Formats</h2>
+                    <p class="hero-subtitle">Free, private, and instant. Convert to AVIF, WebP, and more.</p>
+                    
+                    <!-- Converter Card -->
+                    <div class="converter">
+                        <div class="upload-area" id="drop-zone">
+                            <div class="upload-icon">📁</div>
+                            <h3>Drop images here</h3>
+                            <p>or <button class="link-btn" onclick="document.getElementById('file-input').click()">browse files</button></p>
+                            <input type="file" id="file-input" multiple accept="image/*" hidden>
+                        </div>
+
+                        <div class="options">
+                            <div class="format-options">
+                                <label>Convert to:</label>
+                                <select id="output-format">
+                                    <option value="avif">AVIF (Best compression)</option>
+                                    <option value="webp">WebP (Great support)</option>
+                                    <option value="jpeg">JPEG (Universal)</option>
+                                    <option value="png">PNG (Lossless)</option>
+                                </select>
+                            </div>
+                            <div class="quality-option">
+                                <label>Quality: <span id="quality-value">80</span>%</label>
+                                <input type="range" id="quality" min="10" max="90" value="80">
+                            </div>
+                        </div>
+
+                        <div id="file-list" class="file-list"></div>
+                        <div id="conversion-status" class="status"></div>
                     </div>
                 </div>
-
-                <div class="format-selector">
-                    <label>Convert to:</label>
-                    <select id="output-format">
-                        <option value="avif">AVIF (Recommended)</option>
-                        <option value="webp">WebP</option>
-                        <option value="jpeg">JPEG</option>
-                        <option value="png">PNG</option>
-                    </select>
-                    <label>Quality:</label>
-                    <input type="range" id="quality" min="10" max="90" value="80">
-                    <span id="quality-value">80</span>
-                </div>
-
-                <div id="file-list" class="file-list"></div>
-                <div id="conversion-status" class="status"></div>
-            </div>
-
-            <!-- Ad space -->
-            <div class="ad-rectangle">
-                <p>Advertisement</p>
             </div>
         </main>
 
-        <footer>
-            <p>Privacy-first • No uploads • Powered by WebAssembly</p>
-        </footer>
+        <!-- Features -->
+        <section class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature">
+                        <span class="feature-icon">🔒</span>
+                        <h3>100% Private</h3>
+                        <p>No uploads. Processing happens in your browser.</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">⚡</span>
+                        <h3>Lightning Fast</h3>
+                        <p>Instant conversion with WebAssembly technology.</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🆓</span>
+                        <h3>Always Free</h3>
+                        <p>No limits. Convert unlimited images for free.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Space -->
+        <div class="ad-space">
+            <div class="container">
+                <div class="ad-placeholder">Advertisement</div>
+            </div>
+        </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="converter.js"></script>
 </body>
 </html>

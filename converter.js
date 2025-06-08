@@ -79,6 +79,28 @@ class SimpleConverter {
         });
     }
 
+    // Add this to your existing converter.js file
+setupFormatSelection() {
+    const formatOptions = document.querySelectorAll('input[name="format"]');
+    formatOptions.forEach(option => {
+        option.addEventListener('change', (e) => {
+            // Update the output format in your existing logic
+            if (document.getElementById('output-format')) {
+                document.getElementById('output-format').value = e.target.value;
+            }
+        });
+    });
+}
+
+// Add this to your init() method
+async init() {
+    this.setupEventListeners();
+    this.setupDropZone();
+    this.setupFormatSelection(); // Add this line
+    this.updateQualityDisplay();
+    this.setStatus('Converter ready!', 'success');
+}
+
     async convertFile(index) {
         const file = this.files[index];
         const outputFormat = document.getElementById('output-format').value;

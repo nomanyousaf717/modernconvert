@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernConvert - Free AVIF & WebP Converter</title>
+    <meta name="description" content="Convert images to AVIF, WebP formats for free. 100% private, no upload required. Client-side processing.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 ModernConvert</h1>
+            <p>Free Image Format Converter - 100% Private</p>
+            <!-- Ad space - we'll add AdSense later -->
+            <div class="ad-banner">Ad Space - Coming Soon</div>
+        </header>
+
+        <main>
+            <div class="converter-box">
+                <div id="drop-zone" class="drop-zone">
+                    <div class="drop-content">
+                        <div class="upload-icon">📁</div>
+                        <p>Drag & drop your images here</p>
+                        <p class="or">or</p>
+                        <button onclick="document.getElementById('file-input').click()">
+                            Choose Files
+                        </button>
+                        <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="format-selector">
+                    <label>Convert to:</label>
+                    <select id="output-format">
+                        <option value="avif">AVIF (Recommended)</option>
+                        <option value="webp">WebP</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                    </select>
+                    <label>Quality:</label>
+                    <input type="range" id="quality" min="10" max="90" value="80">
+                    <span id="quality-value">80</span>
+                </div>
+
+                <div id="file-list" class="file-list"></div>
+                <div id="conversion-status" class="status"></div>
+            </div>
+
+            <!-- Ad space -->
+            <div class="ad-rectangle">
+                <p>Advertisement</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Privacy-first • No uploads • Powered by WebAssembly</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js"></script>
+    <script src="converter.js"></script>
+</body>
+</html>

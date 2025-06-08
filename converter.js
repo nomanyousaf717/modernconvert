@@ -1,7 +1,5 @@
-class ModernConverter {
+class SimpleConverter {
     constructor() {
-        this.ffmpeg = null;
-        this.loaded = false;
         this.files = [];
         this.init();
     }
@@ -10,6 +8,7 @@ class ModernConverter {
         this.setupEventListeners();
         this.setupDropZone();
         this.updateQualityDisplay();
+        this.setStatus('Converter ready!', 'success');
     }
 
     setupEventListeners() {
@@ -80,39 +79,6 @@ class ModernConverter {
         });
     }
 
-    async loadFFmpeg() {
-        if (this.loaded) return;
-        
-        this.setStatus('Loading converter...', 'processing');
-        
-        try {
-            // Use a more stable version and configuration
-            const { FFmpeg } = FFmpegWASM;
-            this.ffmpeg = new FFmpeg();
-            
-            // Use jsdelivr CDN instead of unpkg for better reliability
-            await this.ffmpeg.load({
-                coreURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-                wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm'
-            });
-            
-            this.loaded = true;
-            this.setStatus('Converter ready!', 'success');
-        } catch (error) {
-            console.error('Failed to load FFmpeg:', error);
-            this.setStatus('Loading converter failed. Falling back to basic conversion...', 'error');
-            // Fall back to Canvas-based conversion for basic formats
-            this.loadCanvasConverter();
-        }
-    }
-
-    // Fallback converter using Canvas API (more reliable)
-    loadCanvasConverter() {
-        this.loaded = true;
-        this.useCanvasConverter = true;
-        this.setStatus('Basic converter ready!', 'success');
-    }
-
     async convertFile(index) {
         const file = this.files[index];
         const outputFormat = document.getElementById('output-format').value;
@@ -123,18 +89,9 @@ class ModernConverter {
         button.textContent = 'Converting...';
 
         try {
-            await this.loadFFmpeg();
-            
             this.setStatus(`Converting ${file.name} to ${outputFormat.toUpperCase()}...`, 'processing');
 
-            let result;
-            
-            // Use Canvas converter for basic formats if FFmpeg fails
-            if (this.useCanvasConverter && (outputFormat === 'jpeg' || outputFormat === 'png' || outputFormat === 'webp')) {
-                result = await this.convertWithCanvas(file, outputFormat, quality);
-            } else {
-                result = await this.convertWithFFmpeg(file, outputFormat, quality);
-            }
+            const result = await this.convertWithCanvas(file, outputFormat, quality);
             
             if (result) {
                 this.downloadFile(result, `${file.name.split('.')[0]}.${outputFormat}`, outputFormat);
@@ -147,16 +104,21 @@ class ModernConverter {
 
         } catch (error) {
             console.error('Conversion failed:', error);
-            this.setStatus(`❌ Failed to convert ${file.name}. Try a different format.`, 'error');
+            this.setStatus(`❌ Failed to convert ${file.name}`, 'error');
             button.textContent = '❌ Failed';
             button.style.background = '#dc3545';
             button.disabled = false;
         }
     }
 
-    // Canvas-based converter (fallback)
     async convertWithCanvas(file, format, quality) {
-        return new Promise((resolve) => {
+        // Handle AVIF format limitation
+        if (format === 'avif') {
+            this.setStatus('AVIF conversion coming soon! Converting to WebP instead...', 'processing');
+            format = 'webp';
+        }
+
+        return new Promise((resolve, reject) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
@@ -171,40 +133,17 @@ class ModernConverter {
                                format === 'webp' ? 'image/webp' : 'image/jpeg';
                 
                 canvas.toBlob((blob) => {
-                    resolve(blob);
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error('Canvas conversion failed'));
+                    }
                 }, mimeType, quality / 100);
             };
             
+            img.onerror = () => reject(new Error('Failed to load image'));
             img.src = URL.createObjectURL(file);
         });
-    }
-
-    // FFmpeg converter (for advanced formats)
-    async convertWithFFmpeg(file, outputFormat, quality) {
-        const inputName = `input.${file.name.split('.').pop()}`;
-        const outputName = `output.${outputFormat}`;
-
-        await this.ffmpeg.writeFile(inputName, await this.fetchFile(file));
-
-        const commands = {
-            avif: ['-i', inputName, '-c:v', 'libaom-av1', '-crf', quality, '-strict', 'experimental', outputName],
-            webp: ['-i', inputName, '-c:v', 'libwebp', '-quality', quality, outputName],
-            jpeg: ['-i', inputName, '-c:v', 'mjpeg', '-q:v', Math.floor(quality/10), outputName],
-            png: ['-i', inputName, '-c:v', 'png', outputName]
-        };
-
-        await this.ffmpeg.exec(commands[outputFormat] || commands.webp);
-        const data = await this.ffmpeg.readFile(outputName);
-        
-        return new Blob([data.buffer], { 
-            type: outputFormat === 'avif' ? 'image/avif' : 
-                  outputFormat === 'webp' ? 'image/webp' : 
-                  outputFormat === 'jpeg' ? 'image/jpeg' : 'image/png'
-        });
-    }
-
-    async fetchFile(file) {
-        return new Uint8Array(await file.arrayBuffer());
     }
 
     downloadFile(blob, filename, format) {
@@ -242,5 +181,5 @@ class ModernConverter {
 // Initialize the converter when page loads
 let converter;
 document.addEventListener('DOMContentLoaded', () => {
-    converter = new ModernConverter();
+    converter = new SimpleConverter();
 });

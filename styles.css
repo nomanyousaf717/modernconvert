@@ -493,3 +493,135 @@ body {
         font-size: 1.25rem;
     }
 }
+
+/* Bulk Processing Styles */
+.bulk-controls {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+}
+
+.bulk-actions {
+    text-align: center;
+}
+
+.bulk-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 8px;
+    transition: all 0.3s;
+    font-size: 1rem;
+}
+
+.bulk-btn.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.bulk-btn.primary:hover {
+    background: var(--primary-dark);
+}
+
+.bulk-btn.secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.bulk-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bulk-progress {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+#progress-text {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+/* Enhanced file list for bulk processing */
+.file-item {
+    position: relative;
+}
+
+.file-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(40, 167, 69, 0.1);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.file-item.completed::after {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .bulk-btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+    }
+}
+
+/* Add this to your styles.css */
+.convert-single-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 10;
+    position: relative;
+    pointer-events: auto;
+}
+
+.convert-single-btn:hover {
+    background: var(--primary-dark);
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background: var(--gray-50);
+    position: relative;
+    z-index: 1;
+}

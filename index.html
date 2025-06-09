@@ -74,8 +74,10 @@
                             </div>
                         </div>
 
-                        <div id="file-list" class="file-list"></div>
-                        <div id="conversion-status" class="status"></div>
+                        <!-- Replace the existing file-list div with this structure -->
+<div id="file-list" class="file-list"></div>
+<div id="bulk-controls-container"></div>
+<div id="conversion-status" class="status"></div>
                     </div>
                 </div>
             </div>
@@ -113,6 +115,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <!-- Add before your converter.js script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="converter.js"></script>
 </body>
 </html>

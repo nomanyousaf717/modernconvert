@@ -1,3 +1,4 @@
+// Complete converter.js with dynamic button text and all formats
 class SimpleConverter {
     constructor() {
         this.files = [];
@@ -50,7 +51,9 @@ class SimpleConverter {
     }
 
     handleFiles(files) {
-        this.files = Array.from(files).filter(file => file.type.startsWith('image/'));
+        this.files = Array.from(files).filter(file => 
+            file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.jxl')
+        );
         this.displayFiles();
     }
 
@@ -66,10 +69,15 @@ class SimpleConverter {
         this.files.forEach((file, index) => {
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
+            
+            const isJXL = file.name.toLowerCase().endsWith('.jxl');
+            const formatIcon = isJXL ? '🆕' : '📁';
+            
             fileItem.innerHTML = `
                 <div class="file-info">
-                    <h3>${file.name}</h3>
-                    <p>Size: ${this.formatFileSize(file.size)} | Type: ${file.type}</p>
+                    <h3>${formatIcon} ${file.name}</h3>
+                    <p>Size: ${this.formatFileSize(file.size)} | Type: ${file.type || 'JPEG XL'}</p>
+                    ${isJXL ? '<p style="color: #f59e0b; font-weight: 600;">🆕 JPEG XL file detected!</p>' : ''}
                 </div>
                 <button onclick="converter.convertFile(${index})" id="convert-btn-${index}">
                     Convert
@@ -80,58 +88,109 @@ class SimpleConverter {
     }
 
     async convertFile(index) {
-    console.log('convertFile called with index:', index);
-    console.log('Available files:', this.files);
-    
-    const file = this.files[index];
-    if (!file) {
-        console.error('No file found at index:', index);
-        return;
-    }
-    
-    const outputFormat = document.getElementById('output-format').value;
-    const quality = document.getElementById('quality').value;
-    
-    console.log('Converting:', file.name, 'to:', outputFormat);
-    
-    const button = document.getElementById(`convert-btn-${index}`);
-    if (!button) {
-        console.error('Button not found for index:', index);
-        return;
-    }
-    
-    button.disabled = true;
-    button.textContent = 'Converting...';
-
-    try {
-        this.setStatus(`Converting ${file.name} to ${outputFormat.toUpperCase()}...`, 'processing');
-
-        const result = await this.convertWithCanvas(file, outputFormat, quality);
+        const file = this.files[index];
+        if (!file) return;
         
-        if (result) {
-            this.downloadFile(result, `${file.name.split('.')[0]}.${outputFormat}`, outputFormat);
-            this.setStatus(`✅ ${file.name} converted successfully!`, 'success');
-            button.textContent = '✅ Done';
-            button.style.background = '#28a745';
-        } else {
-            throw new Error('Conversion failed');
-        }
+        const outputFormat = document.getElementById('output-format').value;
+        const quality = document.getElementById('quality').value;
+        
+        const button = document.getElementById(`convert-btn-${index}`);
+        button.disabled = true;
+        button.textContent = 'Converting...';
 
-    } catch (error) {
-        console.error('Conversion failed:', error);
-        this.setStatus(`❌ Failed to convert ${file.name}`, 'error');
-        button.textContent = '❌ Failed';
-        button.style.background = '#dc3545';
-        button.disabled = false;
+        try {
+            this.setStatus(`Converting ${file.name} to ${outputFormat.toUpperCase()}...`, 'processing');
+
+            let result;
+            const isJXLInput = file.name.toLowerCase().endsWith('.jxl');
+            
+            if (outputFormat === 'jxl') {
+                result = await this.convertToJXL(file, quality);
+            } else if (isJXLInput) {
+                this.setStatus('🚧 JXL input support coming soon! Please use other formats for now.', 'error');
+                button.textContent = '🚧 JXL Input Soon';
+                button.disabled = false;
+                return;
+            } else {
+                result = await this.convertWithCanvas(file, outputFormat, quality);
+            }
+            
+            if (result) {
+                const extension = outputFormat;
+                const newFilename = `${file.name.split('.')[0]}.${extension}`;
+                this.downloadFile(result, newFilename, outputFormat);
+                
+                if (outputFormat === 'jxl') {
+                    const compressionRatio = ((file.size - result.size) / file.size * 100).toFixed(1);
+                    this.setStatus(`🎉 WORLD'S FIRST FREE JPEG XL CONVERSION! ${compressionRatio}% smaller!`, 'success');
+                } else {
+                    this.setStatus(`✅ ${file.name} converted successfully!`, 'success');
+                }
+                
+                button.textContent = '✅ Done';
+                button.style.background = '#28a745';
+            }
+
+        } catch (error) {
+            console.error('Conversion failed:', error);
+            this.setStatus(`❌ Failed to convert ${file.name}`, 'error');
+            button.textContent = '❌ Failed';
+            button.style.background = '#dc3545';
+            button.disabled = false;
+        }
     }
-}
+
+    async convertToJXL(file, quality) {
+        // Get image data
+        const imageData = await this.getImageDataFromFile(file);
+        
+        // Create worker for JXL processing
+        const worker = new Worker('jxl-worker.js');
+        
+        return new Promise((resolve, reject) => {
+            const id = Math.random().toString(36);
+            
+            worker.onmessage = (e) => {
+                if (e.data.id === id) {
+                    worker.terminate();
+                    if (e.data.success) {
+                        resolve(e.data.result);
+                    } else {
+                        reject(new Error(e.data.error));
+                    }
+                }
+            };
+            
+            worker.postMessage({
+                action: 'encode',
+                id,
+                data: {
+                    imageData,
+                    options: { quality: quality / 100 }
+                }
+            });
+        });
+    }
+
+    async getImageDataFromFile(file) {
+        return new Promise((resolve, reject) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                resolve(ctx.getImageData(0, 0, img.width, img.height));
+            };
+            
+            img.onerror = () => reject(new Error('Failed to load image'));
+            img.src = URL.createObjectURL(file);
+        });
+    }
 
     async convertWithCanvas(file, format, quality) {
-        if (format === 'avif') {
-            this.setStatus('AVIF conversion coming soon! Converting to WebP instead...', 'processing');
-            format = 'webp';
-        }
-
         return new Promise((resolve, reject) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -144,15 +203,44 @@ class SimpleConverter {
                 
                 const mimeType = format === 'jpeg' ? 'image/jpeg' : 
                                format === 'png' ? 'image/png' : 
-                               format === 'webp' ? 'image/webp' : 'image/jpeg';
+                               format === 'webp' ? 'image/webp' :
+                               format === 'avif' ? 'image/avif' : 'image/jpeg';
                 
-                canvas.toBlob((blob) => {
-                    if (blob) {
-                        resolve(blob);
-                    } else {
-                        reject(new Error('Canvas conversion failed'));
-                    }
-                }, mimeType, quality / 100);
+                // Check if browser supports AVIF
+                if (format === 'avif') {
+                    // Test AVIF support
+                    canvas.toBlob((testBlob) => {
+                        if (testBlob && testBlob.type === 'image/avif') {
+                            // AVIF supported
+                            canvas.toBlob((blob) => {
+                                if (blob) {
+                                    resolve(blob);
+                                } else {
+                                    reject(new Error('AVIF conversion failed'));
+                                }
+                            }, 'image/avif', quality / 100);
+                        } else {
+                            // Fallback to WebP
+                            console.log('AVIF not supported, using WebP fallback');
+                            this.setStatus('AVIF not supported in this browser, using WebP...', 'processing');
+                            canvas.toBlob((blob) => {
+                                if (blob) {
+                                    resolve(blob);
+                                } else {
+                                    reject(new Error('WebP fallback failed'));
+                                }
+                            }, 'image/webp', quality / 100);
+                        }
+                    }, 'image/avif', 0.8);
+                } else {
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error('Canvas conversion failed'));
+                        }
+                    }, mimeType, quality / 100);
+                }
             };
             
             img.onerror = () => reject(new Error('Failed to load image'));
@@ -192,7 +280,33 @@ class SimpleConverter {
     }
 }
 
-class UnifiedConverter extends SimpleConverter {
+// Enhanced converter with JPEG XL support
+class ModernConverter extends SimpleConverter {
+    constructor() {
+        super();
+        this.jxlSupported = true;
+    }
+
+    async init() {
+        await super.init();
+        this.updateFormatOptions();
+        this.setStatus('🎉 JPEG XL support LIVE! World\'s first free converter!', 'success');
+    }
+
+    updateFormatOptions() {
+        const formatSelect = document.getElementById('output-format');
+        formatSelect.innerHTML = `
+            <option value="jxl">🆕 JPEG XL (LIVE! 55% smaller!)</option>
+            <option value="avif">AVIF (Great compression)</option>
+            <option value="webp">WebP (Great support)</option>
+            <option value="jpeg">JPEG (Universal)</option>
+            <option value="png">PNG (Lossless)</option>
+        `;
+    }
+}
+
+// Bulk processing functionality with dynamic button text
+class UnifiedConverter extends ModernConverter {
     constructor() {
         super();
         this.processingQueue = [];
@@ -204,104 +318,146 @@ class UnifiedConverter extends SimpleConverter {
     async init() {
         await super.init();
         this.setupBulkControls();
+        this.setupFormatChangeListener();
+    }
+
+    setupFormatChangeListener() {
+        const formatSelect = document.getElementById('output-format');
+        formatSelect.addEventListener('change', () => {
+            this.updateButtonTexts();
+            this.updateBulkButtonText();
+        });
+    }
+
+    updateButtonTexts() {
+        const selectedFormat = document.getElementById('output-format').value;
+        const formatNames = {
+            'jxl': 'JXL',
+            'avif': 'AVIF', 
+            'webp': 'WebP',
+            'jpeg': 'JPEG',
+            'png': 'PNG'
+        };
+
+        const formatIcons = {
+            'jxl': '🆕',
+            'avif': '🎯',
+            'webp': '🌐', 
+            'jpeg': '📷',
+            'png': '🎨'
+        };
+
+        // Update individual convert buttons
+        this.files.forEach((file, index) => {
+            const button = document.getElementById(`convert-btn-${index}`);
+            if (button && !button.disabled && !button.textContent.includes('Done') && !button.textContent.includes('Failed')) {
+                const formatName = formatNames[selectedFormat] || selectedFormat.toUpperCase();
+                const formatIcon = formatIcons[selectedFormat] || '📁';
+                button.textContent = `Convert to ${formatIcon} ${formatName}`;
+            }
+        });
+    }
+
+    updateBulkButtonText() {
+        const selectedFormat = document.getElementById('output-format').value;
+        const formatNames = {
+            'jxl': 'JPEG XL',
+            'avif': 'AVIF',
+            'webp': 'WebP', 
+            'jpeg': 'JPEG',
+            'png': 'PNG'
+        };
+
+        const convertAllBtn = document.getElementById('convert-all-btn');
+        if (convertAllBtn && !convertAllBtn.disabled) {
+            const formatName = formatNames[selectedFormat] || selectedFormat.toUpperCase();
+            convertAllBtn.textContent = `Convert All to ${formatName}`;
+        }
     }
 
     setupBulkControls() {
-    // Target the container instead of trying to insert after file-list
-    const container = document.getElementById('bulk-controls-container');
-    if (!container) return;
-    
-    container.innerHTML = `
-        <div class="bulk-controls">
-            <div class="bulk-actions" style="display: none;">
-                <button id="convert-all-btn" class="bulk-btn primary">
-                    Convert All Files
-                </button>
-                <button id="download-all-btn" class="bulk-btn secondary" style="display: none;">
-                    Download All as ZIP
-                </button>
-                <div class="bulk-progress">
-                    <div class="progress-bar">
-                        <div id="progress-fill" class="progress-fill"></div>
+        const container = document.getElementById('bulk-controls-container');
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div class="bulk-controls">
+                <div class="bulk-actions" style="display: none;">
+                    <button id="convert-all-btn" class="bulk-btn primary">
+                        Convert All to JPEG XL
+                    </button>
+                    <button id="download-all-btn" class="bulk-btn secondary" style="display: none;">
+                        Download All as ZIP
+                    </button>
+                    <div class="bulk-progress">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text">0 / 0 files processed</span>
                     </div>
-                    <span id="progress-text">0 / 0 files processed</span>
                 </div>
             </div>
-        </div>
-    `;
+        `;
 
-    document.getElementById('convert-all-btn').addEventListener('click', () => {
-        this.convertAllFiles();
-    });
+        document.getElementById('convert-all-btn').addEventListener('click', () => {
+            this.convertAllFiles();
+        });
 
-    document.getElementById('download-all-btn').addEventListener('click', () => {
-        this.downloadAsZip();
-    });
-}
+        document.getElementById('download-all-btn').addEventListener('click', () => {
+            this.downloadAsZip();
+        });
+
+        // Set initial button text
+        setTimeout(() => this.updateBulkButtonText(), 100);
+    }
 
     displayFiles() {
-    const fileList = document.getElementById('file-list');
-    fileList.innerHTML = '';
+        const fileList = document.getElementById('file-list');
+        fileList.innerHTML = '';
 
-    if (this.files.length === 0) {
-        fileList.innerHTML = '<p>No valid image files selected</p>';
-        return;
-    }
+        if (this.files.length === 0) {
+            fileList.innerHTML = '<p>No valid image files selected</p>';
+            return;
+        }
 
-    this.files.forEach((file, index) => {
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
-        
-        const fileInfo = document.createElement('div');
-        fileInfo.className = 'file-info';
-        fileInfo.innerHTML = `
-            <h3>${file.name}</h3>
-            <p>Size: ${this.formatFileSize(file.size)} | Type: ${file.type}</p>
-        `;
-        
-        const button = document.createElement('button');
-        button.id = `convert-btn-${index}`;
-        button.className = 'convert-single-btn';
-        button.textContent = 'Convert';
-        
-        // Add click event directly to the created button
-        button.addEventListener('click', (e) => {
-            console.log('Button clicked for index:', index);
-            e.stopPropagation();
-            e.preventDefault();
-            this.convertFile(index);
+        this.files.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            
+            const isJXL = file.name.toLowerCase().endsWith('.jxl');
+            const formatIcon = isJXL ? '🆕' : '📁';
+            
+            const fileInfo = document.createElement('div');
+            fileInfo.className = 'file-info';
+            fileInfo.innerHTML = `
+                <h3>${formatIcon} ${file.name}</h3>
+                <p>Size: ${this.formatFileSize(file.size)} | Ready for conversion!</p>
+                ${isJXL ? '<p style="color: #f59e0b; font-weight: 600;">🆕 JPEG XL detected!</p>' : ''}
+            `;
+            
+            const button = document.createElement('button');
+            button.id = `convert-btn-${index}`;
+            button.className = 'convert-single-btn';
+            button.textContent = 'Convert';
+            
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                this.convertFile(index);
+            });
+            
+            fileItem.appendChild(fileInfo);
+            fileItem.appendChild(button);
+            fileList.appendChild(fileItem);
         });
-        
-        fileItem.appendChild(fileInfo);
-        fileItem.appendChild(button);
-        fileList.appendChild(fileItem);
-        
-        console.log('Added button for index:', index, button);
-    });
 
-    // Show/hide bulk controls
-    const bulkActions = document.querySelector('.bulk-actions');
-    if (bulkActions) {
-        bulkActions.style.display = this.files.length > 1 ? 'block' : 'none';
-    }
-}
-
-    handleFiles(files) {
-        const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-        
-        if (imageFiles.length === 0) {
-            this.setStatus('No valid image files found', 'error');
-            return;
+        // Show bulk controls
+        const bulkActions = document.querySelector('.bulk-actions');
+        if (bulkActions) {
+            bulkActions.style.display = this.files.length > 1 ? 'block' : 'none';
         }
 
-        if (imageFiles.length > 50) {
-            this.setStatus('Maximum 50 files allowed at once', 'error');
-            return;
-        }
-
-        this.files = imageFiles;
-        this.displayFiles();
-        this.setStatus(`${imageFiles.length} files ready for conversion`, 'success');
+        // Update button texts based on selected format
+        setTimeout(() => this.updateButtonTexts(), 100);
     }
 
     async convertAllFiles() {
@@ -312,32 +468,32 @@ class UnifiedConverter extends SimpleConverter {
         
         const convertBtn = document.getElementById('convert-all-btn');
         const downloadBtn = document.getElementById('download-all-btn');
+        const selectedFormat = document.getElementById('output-format').value;
         
         convertBtn.disabled = true;
-        convertBtn.textContent = 'Processing...';
+        convertBtn.textContent = `Converting to ${selectedFormat.toUpperCase()}...`;
         downloadBtn.style.display = 'none';
 
-        const outputFormat = document.getElementById('output-format').value;
         const quality = document.getElementById('quality').value;
-
         this.updateProgress(0, this.files.length);
 
         for (let i = 0; i < this.files.length; i += this.maxConcurrent) {
             const batch = this.files.slice(i, i + this.maxConcurrent);
             const promises = batch.map((file, index) => 
-                this.convertFileInBulk(file, i + index, outputFormat, quality)
+                this.convertFileInBulk(file, i + index, selectedFormat, quality)
             );
             
             await Promise.allSettled(promises);
         }
 
         this.isProcessing = false;
-        convertBtn.textContent = 'Convert All Files';
+        this.updateBulkButtonText();
         convertBtn.disabled = false;
 
         if (this.completedFiles.length > 0) {
             downloadBtn.style.display = 'block';
-            this.setStatus(`✅ ${this.completedFiles.length} files converted successfully!`, 'success');
+            const formatName = selectedFormat === 'jxl' ? 'JPEG XL' : selectedFormat.toUpperCase();
+            this.setStatus(`🎉 ${this.completedFiles.length} files converted to ${formatName}!`, 'success');
         }
     }
 
@@ -349,7 +505,12 @@ class UnifiedConverter extends SimpleConverter {
                 button.textContent = 'Converting...';
             }
 
-            const result = await this.convertWithCanvas(file, outputFormat, quality);
+            let result;
+            if (outputFormat === 'jxl') {
+                result = await this.convertToJXL(file, quality);
+            } else {
+                result = await this.convertWithCanvas(file, outputFormat, quality);
+            }
             
             if (result) {
                 const filename = `${file.name.split('.')[0]}.${outputFormat}`;
@@ -360,8 +521,13 @@ class UnifiedConverter extends SimpleConverter {
                 });
 
                 if (button) {
-                    button.textContent = '✅ Done';
-                    button.style.background = '#28a745';
+                    const formatIcons = {
+                        'jxl': '🆕', 'avif': '🎯', 'webp': '🌐', 
+                        'jpeg': '📷', 'png': '🎨'
+                    };
+                    const icon = formatIcons[outputFormat] || '✅';
+                    button.textContent = `${icon} Done`;
+                    button.style.background = outputFormat === 'jxl' ? '#f59e0b' : '#28a745';
                 }
 
                 this.updateProgress(this.completedFiles.length, this.files.length);
@@ -391,7 +557,7 @@ class UnifiedConverter extends SimpleConverter {
     async downloadAsZip() {
         if (this.completedFiles.length === 0) return;
 
-        this.setStatus('Creating ZIP file...', 'processing');
+        this.setStatus('Creating ZIP package...', 'processing');
 
         try {
             const zip = new JSZip();
@@ -403,10 +569,11 @@ class UnifiedConverter extends SimpleConverter {
             const zipBlob = await zip.generateAsync({type: "blob"});
             
             const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-            const zipFilename = `converted-images-${timestamp}.zip`;
+            const selectedFormat = document.getElementById('output-format').value;
+            const zipFilename = `${selectedFormat}-converted-${timestamp}.zip`;
             
             this.downloadFile(zipBlob, zipFilename, 'zip');
-            this.setStatus(`✅ ZIP file downloaded with ${this.completedFiles.length} images!`, 'success');
+            this.setStatus(`🎉 ZIP downloaded with ${this.completedFiles.length} images!`, 'success');
 
         } catch (error) {
             console.error('ZIP creation failed:', error);

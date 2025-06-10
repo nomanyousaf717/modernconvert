@@ -371,7 +371,7 @@ class UnifiedConverter extends ModernConverter {
         await super.init();
         this.setupBulkControls();
         this.setupFormatChangeListener();
-        this.checkFormatSupport(); // Add this line here
+        
     }
 
     // Add this new method after the init() method

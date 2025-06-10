@@ -13,9 +13,10 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ModernConvert - World's First Free JPEG XL Converter | AVIF, WebP</title>
-    <meta name="description" content="World's first free JPEG XL converter! Convert images to AVIF, WebP, and next-gen formats. 100% private - no uploads required.">
+    <title>ModernConvert - Privacy-First Image Converter | AVIF, WebP, JPEG XL</title>
+    <meta name="description" content="Convert images to modern formats like AVIF, WebP, and JPEG XL with complete privacy. 100% client-side processing - no uploads required.">
     
+    <!-- Clean, modern font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -44,14 +45,8 @@
         <main class="main">
             <div class="container">
                 <div class="hero">
-                    <h2 class="hero-title">🆕 World's FIRST Free JPEG XL Converter</h2>
-                    <p class="hero-subtitle">Convert to next-gen JPEG XL format RIGHT NOW! Get 55% smaller files instantly.</p>
-                    
-                    <!-- LIVE announcement banner -->
-                    <div class="jxl-highlight jxl-live">
-                        <div class="jxl-badge jxl-live-badge">🔥 LIVE NOW</div>
-                        <span>JPEG XL conversion working! First free converter in the world!</span>
-                    </div>
+                    <h2 class="hero-title">Privacy-First Image Converter</h2>
+                    <p class="hero-subtitle">Convert to AVIF, WebP, JPEG XL and more - all in your browser. No uploads, complete privacy.</p>
                     
                     <!-- Converter Card -->
                     <div class="converter">
@@ -59,15 +54,15 @@
                             <div class="upload-icon">📁</div>
                             <h3>Drop images here</h3>
                             <p>or <button class="link-btn" onclick="document.getElementById('file-input').click()">browse files</button></p>
-                            <input type="file" id="file-input" multiple accept="image/*,.jxl" hidden>
+                            <input type="file" id="file-input" multiple accept="image/*" hidden>
                         </div>
 
                         <div class="options">
                             <div class="format-options">
                                 <label>Convert to:</label>
                                 <select id="output-format">
-                                    <option value="jxl">🆕 JPEG XL (LIVE! 55% smaller!)</option>
-                                    <option value="avif">AVIF (Great compression)</option>
+                                    <option value="jxl">🆕 JPEG XL (Client-side! 55% smaller)</option>
+                                    <option value="avif">AVIF (Best compression)</option>
                                     <option value="webp">WebP (Great support)</option>
                                     <option value="jpeg">JPEG (Universal)</option>
                                     <option value="png">PNG (Lossless)</option>
@@ -87,119 +82,156 @@
             </div>
         </main>
 
-        <!-- Enhanced Features -->
-        <section class="features">
-            <div class="container">
-                <div class="features-header">
-                    <h2>🆕 World's First Free JPEG XL Converter</h2>
-                    <p>Revolutionary image compression technology, available free for everyone</p>
+        <!-- Features -->
+<section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature">
+                <span class="feature-icon">🔒</span>
+                <h3>100% Private</h3>
+                <p>No uploads. Processing happens entirely in your browser.</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">⚡</span>
+                <h3>Client-Side Processing</h3>
+                <p>Rare client-side JXL support with WebAssembly technology.</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🆓</span>
+                <h3>Always Free</h3>
+                <p>No limits, registration, or hidden costs. Convert unlimited images.</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📱</span>
+                <h3>Works Offline</h3>
+                <p>After loading, works completely offline. Perfect for mobile.</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🎯</span>
+                <h3>Batch Processing</h3>
+                <p>Convert multiple images at once with our bulk conversion feature.</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🌐</span>
+                <h3>Modern Formats</h3>
+                <p>Support for cutting-edge formats like AVIF and JPEG XL.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Replace the entire benefits section with this -->
+<section class="benefits">
+    <div class="container">
+        <div class="benefits-content">
+            <h3>Convert Images Without Compromise</h3>
+            <p class="benefits-subtitle">Most converters force you to upload your images to their servers. We're different.</p>
+            
+            <div class="comparison-cards">
+                <div class="comparison-card other-tools">
+                    <div class="card-header">
+                        <span class="card-icon">😰</span>
+                        <h4>Other Converters</h4>
+                    </div>
+                    <ul class="comparison-list">
+                        <li>❌ Upload your private images</li>
+                        <li>❌ Wait for slow server processing</li>
+                        <li>❌ File size limits</li>
+                        <li>❌ Registration required</li>
+                        <li>❌ Premium subscriptions</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card our-tool">
+                    <div class="card-header">
+                        <span class="card-icon">😎</span>
+                        <h4>ModernConvert</h4>
+                    </div>
+                    <ul class="comparison-list">
+                        <li>✅ Images never leave your device</li>
+                        <li>✅ Instant processing in your browser</li>
+                        <li>✅ No file size limits</li>
+                        <li>✅ No registration needed</li>
+                        <li>✅ Completely free forever</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <span class="trust-number">100%</span>
+                    <span class="trust-label">Private</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-number">0</span>
+                    <span class="trust-label">Uploads</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-number">∞</span>
+                    <span class="trust-label">File Limit</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Replace the current ad-space section with this -->
+<div class="ad-space">
+    <div class="container">
+        <!-- Google AdSense Display Ad -->
+        <ins class="adsbygoogle"
+             style="display:block; text-align:center;"
+             data-ad-layout="in-article"
+             data-ad-format="fluid"
+             data-ad-client="ca-pub-6516494353796408"
+             data-ad-slot="1234567890"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="converter.js"></script>
+    <!-- Footer - Add this before closing </div> of .app -->
+        <footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>ModernConvert</h3>
+                <p>Privacy-first image conversion in your browser</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <a href="/index.html">Image Converter</a>
+                    <a href="/about.html">About</a>
+                    <a href="/help.html">Help</a>
                 </div>
                 
-                <div class="features-grid">
-                    <div class="feature feature-primary">
-                        <span class="feature-icon">🆕</span>
-                        <h3>JPEG XL LIVE NOW!</h3>
-                        <p>First free converter with JPEG XL support. Get 55% smaller files with better quality than JPEG!</p>
-                        <div class="feature-badge">WORLD'S FIRST</div>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">📊</span>
-                        <h3>55% Better Compression</h3>
-                        <p>JPEG XL delivers dramatically smaller files while maintaining or improving visual quality.</p>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">⚡</span>
-                        <h3>Instant Batch Processing</h3>
-                        <p>Convert hundreds of images to JPEG XL simultaneously. No limits, no waiting.</p>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">🔒</span>
-                        <h3>100% Private & Secure</h3>
-                        <p>All processing happens in your browser. Your images never leave your device.</p>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">🚀</span>
-                        <h3>Next-Gen Technology</h3>
-                        <p>Powered by WebAssembly for near-native performance directly in your browser.</p>
-                    </div>
-                    <div class="feature">
-                        <span class="feature-icon">💰</span>
-                        <h3>Always Free</h3>
-                        <p>No subscriptions, no hidden costs, unlimited conversions. What competitors charge for, we offer free.</p>
-                    </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <a href="/privacy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms of Service</a>
                 </div>
                 
-                <!-- Comparison section -->
-                <div class="comparison-section">
-                    <h3>Why Choose ModernConvert?</h3>
-                    <div class="comparison-grid">
-                        <div class="comparison-item">
-                            <div class="comparison-label">Other Converters</div>
-                            <div class="comparison-features">
-                                <span class="feature-no">❌ No JPEG XL support</span>
-                                <span class="feature-no">❌ File size limits (10-100MB)</span>
-                                <span class="feature-no">❌ Daily conversion caps</span>
-                                <span class="feature-no">❌ Requires file uploads</span>
-                                <span class="feature-no">❌ Premium features cost $8-25/month</span>
-                           </div>
-                       </div>
-                       <div class="comparison-item comparison-us">
-                           <div class="comparison-label">ModernConvert</div>
-                           <div class="comparison-features">
-                               <span class="feature-yes">✅ JPEG XL LIVE NOW!</span>
-                               <span class="feature-yes">✅ Unlimited file sizes</span>
-                               <span class="feature-yes">✅ Unlimited conversions</span>
-                               <span class="feature-yes">✅ 100% client-side processing</span>
-                               <span class="feature-yes">✅ Everything FREE forever</span>
-                           </div>
-                       </div>
-                   </div>
-               </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <a href="/contact.html">Contact</a>
+                    <a href="/help.html">FAQ</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 ModernConvert. All rights reserved.</p>
+            <p>Made with ❤️ for privacy-conscious users</p>
+        </div>
+    </div>
+</footer>
+    </div>
 
-               <!-- Format support showcase -->
-               <div class="formats-section">
-                   <h3>Supported Formats</h3>
-                   <div class="formats-grid">
-                       <div class="format-item format-new">
-                           <span class="format-icon">🆕</span>
-                           <span class="format-name">JPEG XL</span>
-                           <span class="format-desc">55% smaller, next-gen</span>
-                       </div>
-                       <div class="format-item">
-                           <span class="format-icon">🎯</span>
-                           <span class="format-name">AVIF</span>
-                           <span class="format-desc">Great compression</span>
-                       </div>
-                       <div class="format-item">
-                           <span class="format-icon">🌐</span>
-                           <span class="format-name">WebP</span>
-                           <span class="format-desc">Modern web standard</span>
-                       </div>
-                       <div class="format-item">
-                           <span class="format-icon">📷</span>
-                           <span class="format-name">JPEG</span>
-                           <span class="format-desc">Universal compatibility</span>
-                       </div>
-                       <div class="format-item">
-                           <span class="format-icon">🎨</span>
-                           <span class="format-name">PNG</span>
-                           <span class="format-desc">Lossless quality</span>
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </section>
-
-       <!-- Ad Space -->
-       <div class="ad-space">
-           <div class="container">
-               <div class="ad-placeholder">Advertisement</div>
-           </div>
-       </div>
-   </div>
-
-   <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-   <script src="converter.js"></script>
 </body>
 </html>

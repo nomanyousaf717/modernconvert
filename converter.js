@@ -148,7 +148,7 @@ class SimpleConverter {
                 
                 if (outputFormat === 'jxl') {
                     const compressionRatio = ((file.size - result.size) / file.size * 100).toFixed(1);
-                    this.setStatus(`🎉 WORLD'S FIRST FREE JPEG XL CONVERSION! ${compressionRatio}% smaller!`, 'success');
+                    this.setStatus(`🎉 JXL conversion complete! ${compressionRatio}% smaller file!`, 'success');
                 } else {
                     this.setStatus(`✅ ${file.name} converted successfully!`, 'success');
                 }
@@ -342,13 +342,13 @@ class ModernConverter extends SimpleConverter {
     async init() {
         await super.init();
         this.updateFormatOptions();
-        this.setStatus('🎉 JPEG XL support LIVE! World\'s first free converter!', 'success');
+        this.setStatus('🎉 Client-side JXL conversion ready! 100% private processing.', 'success');
     }
 
     updateFormatOptions() {
         const formatSelect = document.getElementById('output-format');
         formatSelect.innerHTML = `
-            <option value="jxl">🆕 JPEG XL (LIVE! 55% smaller!)</option>
+            <option value="jxl">🆕 JPEG XL (Client-side! 55% smaller!)</option>
             <option value="avif">AVIF (Great compression)</option>
             <option value="webp">WebP (Great support)</option>
             <option value="jpeg">JPEG (Universal)</option>

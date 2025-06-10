@@ -9,7 +9,33 @@ class SimpleConverter {
         this.setupEventListeners();
         this.setupDropZone();
         this.updateQualityDisplay();
+        this.checkFormatSupport(); // Add this line here
         this.setStatus('Converter ready!', 'success');
+    }
+
+    // Add this new method after the init() method
+    checkFormatSupport() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        
+        const formats = {
+            webp: canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0,
+            avif: canvas.toDataURL('image/avif').indexOf('data:image/avif') === 0
+        };
+        
+        // Update UI to show supported formats
+        const formatSelect = document.getElementById('output-format');
+        const options = formatSelect.querySelectorAll('option');
+        
+        options.forEach(option => {
+            if (option.value === 'avif' && !formats.avif) {
+                option.textContent += ' (Limited support)';
+            }
+            if (option.value === 'jxl') {
+                option.textContent += ' (Desktop only)';
+            }
+        });
     }
 
     setupEventListeners() {
@@ -191,72 +217,98 @@ class SimpleConverter {
     }
 
     async convertWithCanvas(file, format, quality) {
-        return new Promise((resolve, reject) => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
+    if (format === 'jxl' || format === 'jpeg-xl') {
+        // Most mobile browsers don't support JXL yet
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
+        
+        if (isMobile) {
+            this.setStatus('JXL not fully supported on mobile. Converting to WebP for compatibility...', 'processing');
+            format = 'webp';
+        } else {
+            this.setStatus('JXL conversion coming soon! Using WebP instead...', 'processing');
+            format = 'webp';
+        }
+    }
+
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
             
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                
-                const mimeType = format === 'jpeg' ? 'image/jpeg' : 
-                               format === 'png' ? 'image/png' : 
-                               format === 'webp' ? 'image/webp' :
-                               format === 'avif' ? 'image/avif' : 'image/jpeg';
-                
-                // Check if browser supports AVIF
-                if (format === 'avif') {
-                    // Test AVIF support
-                    canvas.toBlob((testBlob) => {
-                        if (testBlob && testBlob.type === 'image/avif') {
-                            // AVIF supported
-                            canvas.toBlob((blob) => {
-                                if (blob) {
-                                    resolve(blob);
-                                } else {
-                                    reject(new Error('AVIF conversion failed'));
-                                }
-                            }, 'image/avif', quality / 100);
-                        } else {
-                            // Fallback to WebP
-                            console.log('AVIF not supported, using WebP fallback');
-                            this.setStatus('AVIF not supported in this browser, using WebP...', 'processing');
-                            canvas.toBlob((blob) => {
-                                if (blob) {
-                                    resolve(blob);
-                                } else {
-                                    reject(new Error('WebP fallback failed'));
-                                }
-                            }, 'image/webp', quality / 100);
-                        }
-                    }, 'image/avif', 0.8);
+            let mimeType;
+            switch(format) {
+                case 'jpeg':
+                    mimeType = 'image/jpeg';
+                    break;
+                case 'png':
+                    mimeType = 'image/png';
+                    break;
+                case 'webp':
+                    mimeType = 'image/webp';
+                    break;
+                case 'avif':
+                    mimeType = 'image/avif';
+                    break;
+                default:
+                    mimeType = 'image/jpeg';
+            }
+            
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(blob);
                 } else {
-                    canvas.toBlob((blob) => {
-                        if (blob) {
-                            resolve(blob);
-                        } else {
-                            reject(new Error('Canvas conversion failed'));
-                        }
-                    }, mimeType, quality / 100);
+                    reject(new Error('Canvas conversion failed'));
                 }
-            };
-            
-            img.onerror = () => reject(new Error('Failed to load image'));
-            img.src = URL.createObjectURL(file);
-        });
+            }, mimeType, quality / 100);
+        };
+        
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = URL.createObjectURL(file);
+    });
     }
 
     downloadFile(blob, filename, format) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    
+    // Force download attribute to prevent browser interpretation
+    a.download = filename;
+    
+    // Add explicit MIME type handling for problematic formats
+    if (format === 'jxl' || format === 'jpeg-xl') {
+        // Force the filename extension for JXL
+        if (!filename.toLowerCase().endsWith('.jxl')) {
+            a.download = filename.replace(/\.[^/.]+$/, '') + '.jxl';
+        }
+        
+        // Create blob with explicit MIME type
+        const correctedBlob = new Blob([blob], { 
+            type: 'image/jxl' 
+        });
+        const correctedUrl = URL.createObjectURL(correctedBlob);
+        a.href = correctedUrl;
+        
+        // Clean up the original URL
         URL.revokeObjectURL(url);
+    }
+    
+    // Ensure the download happens
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup with a slight delay for mobile compatibility
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+    }, 100);
     }
 
     formatFileSize(bytes) {
@@ -319,6 +371,32 @@ class UnifiedConverter extends ModernConverter {
         await super.init();
         this.setupBulkControls();
         this.setupFormatChangeListener();
+        this.checkFormatSupport(); // Add this line here
+    }
+
+    // Add this new method after the init() method
+    checkFormatSupport() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        
+        const formats = {
+            webp: canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0,
+            avif: canvas.toDataURL('image/avif').indexOf('data:image/avif') === 0
+        };
+        
+        // Update UI to show supported formats
+        const formatSelect = document.getElementById('output-format');
+        const options = formatSelect.querySelectorAll('option');
+        
+        options.forEach(option => {
+            if (option.value === 'avif' && !formats.avif) {
+                option.textContent += ' (Limited support)';
+            }
+            if (option.value === 'jxl') {
+                option.textContent += ' (Desktop only)';
+            }
+        });
     }
 
     setupFormatChangeListener() {

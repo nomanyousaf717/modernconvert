@@ -39,6 +39,7 @@ body {
 
 /* Header */
 .header {
+    overflow: hidden;
     padding: 20px 0;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -1605,10 +1606,11 @@ body {
         display: flex;
     }
     
+    /* HIDE desktop menu and convert to mobile menu */
     .nav-menu {
         position: fixed;
         top: 0;
-        right: -100%;
+        right: -100%; /* This should completely hide it */
         width: 280px;
         height: 100vh;
         background: rgba(17, 24, 39, 0.95);
@@ -1619,15 +1621,20 @@ body {
         gap: 40px;
         transition: right 0.3s ease;
         z-index: 1000;
+        /* Add these to ensure it's completely hidden */
+        overflow: hidden;
+        transform: translateX(100%);
     }
     
     .nav-menu.active {
         right: 0;
+        transform: translateX(0);
     }
     
     .nav-link {
         font-size: 1.2rem;
         font-weight: 600;
+        white-space: nowrap; /* Prevent text wrapping */
     }
     
     /* Hamburger Animation */
@@ -1643,6 +1650,7 @@ body {
         transform: rotate(45deg) translate(-6px, -6px);
     }
 }
+
 
 /* Converter Options Mobile Fix */
 .options {
@@ -1772,5 +1780,35 @@ body {
     .nav-menu {
         width: 100%;
         right: -100%;
+    }
+}
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    overflow: hidden;
+}
+
+/* Extra small mobile - make sure it's fully hidden */
+@media (max-width: 480px) {
+    .nav-menu {
+        width: 100%;
+        right: -100%;
+        transform: translateX(100%);
+    }
+    
+    .nav-menu.active {
+        right: 0;
+        transform: translateX(0);
+    }
+    
+    .brand h1 {
+        font-size: 1.3rem;
     }
 }

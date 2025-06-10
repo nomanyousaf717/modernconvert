@@ -24,22 +24,31 @@
 <body>
     <div class="app">
         <!-- Header -->
-        <header class="header">
-            <div class="container">
-                <div class="brand">
-                    <h1>
-                        <img src="logo.png" alt="ModernConvert" style="height: 40px; vertical-align: middle;">
-                        ModernConvert
-                    </h1>
-                </div>
-                <nav class="nav">
-                    <a href="/index.html">Home</a>
-                    <a href="/about.html">About</a>
-                    <a href="/privacy.html">Privacy</a>
-                    <a href="/terms.html">Terms</a>
-                </nav>
+        <!-- Replace the current header section with this -->
+<header class="header">
+    <div class="container">
+        <div class="brand">
+            <h1>
+                <img src="logo.png" alt="ModernConvert" style="height: 40px; vertical-align: middle;">
+                ModernConvert
+            </h1>
+        </div>
+        <nav class="nav">
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-        </header>
+            <div class="nav-menu" id="nav-menu">
+                <a href="/index.html" class="nav-link">Home</a>
+                <a href="/about.html" class="nav-link">About</a>
+                <a href="/privacy.html" class="nav-link">Privacy</a>
+                <a href="/terms.html" class="nav-link">Terms</a>
+                <a href="/help.html" class="nav-link">Help</a>
+            </div>
+        </nav>
+    </div>
+</header>
 
         <!-- Hero Section -->
         <main class="main">
@@ -57,22 +66,25 @@
                             <input type="file" id="file-input" multiple accept="image/*" hidden>
                         </div>
 
-                        <div class="options">
-                            <div class="format-options">
-                                <label>Convert to:</label>
-                                <select id="output-format">
-                                    <option value="jxl">🆕 JPEG XL (Client-side! 55% smaller)</option>
-                                    <option value="avif">AVIF (Best compression)</option>
-                                    <option value="webp">WebP (Great support)</option>
-                                    <option value="jpeg">JPEG (Universal)</option>
-                                    <option value="png">PNG (Lossless)</option>
-                                </select>
-                            </div>
-                            <div class="quality-option">
-                                <label>Quality: <span id="quality-value">80</span>%</label>
-                                <input type="range" id="quality" min="10" max="90" value="80">
-                            </div>
-                        </div>
+                        <!-- Replace the current options div with this -->
+<div class="options">
+    <div class="format-options">
+        <label>Convert to:</label>
+        <select id="output-format">
+            <option value="jxl">🆕 JPEG XL (Client-side! 55% smaller)</option>
+            <option value="avif">AVIF (Best compression)</option>
+            <option value="webp">WebP (Great support)</option>
+            <option value="jpeg">JPEG (Universal)</option>
+            <option value="png">PNG (Lossless)</option>
+        </select>
+    </div>
+    <div class="quality-option">
+        <label>Quality: <span id="quality-value">80</span>%</label>
+        <div class="quality-slider-container">
+            <input type="range" id="quality" min="10" max="90" value="80">
+        </div>
+    </div>
+</div>
 
                         <div id="file-list" class="file-list"></div>
                         <div id="bulk-controls-container"></div>
@@ -230,6 +242,36 @@
     </div>
 </footer>
     </div>
-
+<script>
+// Mobile Navigation Toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

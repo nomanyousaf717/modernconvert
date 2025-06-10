@@ -1606,11 +1606,10 @@ body {
         display: flex;
     }
     
-    /* HIDE desktop menu and convert to mobile menu */
     .nav-menu {
         position: fixed;
         top: 0;
-        right: -100%; /* This should completely hide it */
+        right: 0; /* Keep it at right: 0 */
         width: 280px;
         height: 100vh;
         background: rgba(17, 24, 39, 0.95);
@@ -1619,23 +1618,33 @@ body {
         align-items: center;
         justify-content: center;
         gap: 40px;
-        transition: right 0.3s ease;
-        z-index: 1000;
-        /* Add these to ensure it's completely hidden */
-        overflow: hidden;
+        /* Use transform to hide it completely */
         transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
     }
     
     .nav-menu.active {
-        right: 0;
         transform: translateX(0);
     }
     
     .nav-link {
         font-size: 1.2rem;
         font-weight: 600;
-        white-space: nowrap; /* Prevent text wrapping */
     }
+}
+
+@media (max-width: 480px) {
+    .nav-menu {
+        width: 100%;
+        transform: translateX(100%);
+    }
+    
+    .nav-menu.active {
+        transform: translateX(0);
+    }
+}
+
     
     /* Hamburger Animation */
     .nav-toggle.active span:nth-child(1) {
@@ -1649,7 +1658,6 @@ body {
     .nav-toggle.active span:nth-child(3) {
         transform: rotate(45deg) translate(-6px, -6px);
     }
-}
 
 
 /* Converter Options Mobile Fix */

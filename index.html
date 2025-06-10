@@ -243,13 +243,14 @@
 </footer>
     </div>
 <script>
-// Mobile Navigation Toggle
+// Mobile Navigation Toggle - Dropdown Style
 document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function() {
+        navToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             navToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
         });

@@ -1601,50 +1601,129 @@ body {
 }
 
 /* Mobile Navigation */
+/* Mobile Navigation Fixes */
+.header {
+    padding: 15px 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: visible; /* Allow dropdown to show */
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    z-index: 1001;
+}
+
+.brand h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Desktop Navigation */
+.nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+    background: none;
+    border: none;
+}
+
+.nav-toggle span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+    opacity: 1;
+}
+
+/* Mobile Navigation - Dropdown Style */
 @media (max-width: 768px) {
     .nav-toggle {
         display: flex;
     }
     
     .nav-menu {
-        position: fixed;
-        top: 0;
-        right: 0; /* Keep it at right: 0 */
-        width: 280px;
-        height: 100vh;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
         background: rgba(17, 24, 39, 0.95);
         backdrop-filter: blur(20px);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 40px;
-        /* Use transform to hide it completely */
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
+        gap: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
         z-index: 1000;
+        margin-top: 10px;
     }
     
     .nav-menu.active {
-        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
     }
     
     .nav-link {
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
-}
-
-@media (max-width: 480px) {
-    .nav-menu {
-        width: 100%;
-        transform: translateX(100%);
+        padding: 15px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: background 0.3s;
     }
     
-    .nav-menu.active {
-        transform: translateX(0);
+    .nav-link:last-child {
+        border-bottom: none;
+        border-radius: 0 0 8px 8px;
     }
-}
-
+    
+    .nav-link:first-child {
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
     
     /* Hamburger Animation */
     .nav-toggle.active span:nth-child(1) {
@@ -1658,7 +1737,7 @@ body {
     .nav-toggle.active span:nth-child(3) {
         transform: rotate(45deg) translate(-6px, -6px);
     }
-
+}
 
 /* Converter Options Mobile Fix */
 .options {
@@ -1673,6 +1752,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 0; /* Allow flex items to shrink */
 }
 
 .options label {
@@ -1688,12 +1768,16 @@ body {
     font: inherit;
     background: white;
     font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Quality Slider Container */
+/* Quality Slider Container - FIXED */
 .quality-slider-container {
     position: relative;
     width: 100%;
+    padding: 10px 0; /* Add vertical padding for touch target */
+    box-sizing: border-box;
 }
 
 .options input[type="range"] {
@@ -1704,6 +1788,8 @@ body {
     outline: none;
     -webkit-appearance: none;
     appearance: none;
+    box-sizing: border-box;
+    margin: 0; /* Remove default margins */
 }
 
 .options input[type="range"]::-webkit-slider-thumb {
@@ -1715,6 +1801,7 @@ body {
     background: var(--primary);
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    margin-top: -6px; /* Center the thumb */
 }
 
 .options input[type="range"]::-moz-range-thumb {
@@ -1725,6 +1812,7 @@ body {
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     border: none;
+    margin-top: -6px;
 }
 
 .options select:focus,
@@ -1750,21 +1838,26 @@ body {
     }
     
     .quality-slider-container {
-        padding: 0 5px;
+        padding: 15px 10px; /* More padding on mobile */
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .options input[type="range"] {
-        height: 10px;
+        height: 12px; /* Bigger on mobile */
+        margin: 0;
     }
     
     .options input[type="range"]::-webkit-slider-thumb {
-        height: 24px;
-        width: 24px;
+        height: 28px;
+        width: 28px;
+        margin-top: -8px;
     }
     
     .options input[type="range"]::-moz-range-thumb {
-        height: 24px;
-        width: 24px;
+        height: 28px;
+        width: 28px;
+        margin-top: -8px;
     }
 }
 
@@ -1775,22 +1868,19 @@ body {
     
     .converter {
         padding: 25px 20px;
+        box-sizing: border-box;
     }
     
     .options {
         gap: 16px;
     }
     
-    .brand h1 {
-        font-size: 1.3rem;
-    }
-    
-    .nav-menu {
-        width: 100%;
-        right: -100%;
+    .quality-slider-container {
+        padding: 15px 5px;
     }
 }
 
+/* Prevent body overflow */
 html, body {
     overflow-x: hidden;
     max-width: 100%;
@@ -1800,23 +1890,5 @@ html, body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-    overflow: hidden;
-}
-
-/* Extra small mobile - make sure it's fully hidden */
-@media (max-width: 480px) {
-    .nav-menu {
-        width: 100%;
-        right: -100%;
-        transform: translateX(100%);
-    }
-    
-    .nav-menu.active {
-        right: 0;
-        transform: translateX(0);
-    }
-    
-    .brand h1 {
-        font-size: 1.3rem;
-    }
+    box-sizing: border-box;
 }

@@ -1,66 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- Main pages -->
     <url>
-        <loc>https://modernconvert.com/</loc>
+        <loc>https://modernconvert.vercel.app/</loc>
         <lastmod>2024-12-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://modernconvert.com/about.html</loc>
+        <loc>https://modernconvert.vercel.app/about.html</loc>
         <lastmod>2024-12-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://modernconvert.com/privacy.html</loc>
-        <lastmod>2024-12-15</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.3</priority>
-    </url>
-    <url>
-        <loc>https://modernconvert.com/terms.html</loc>
-        <lastmod>2024-12-15</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.3</priority>
-    </url>
-    <url>
-        <loc>https://modernconvert.com/help.html</loc>
-        <lastmod>2024-12-15</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://modernconvert.com/contact.html</loc>
-        <lastmod>2024-12-15</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.4</priority>
-    </url>
-    
-    <!-- Blog pages -->
-    <url>
-        <loc>https://modernconvert.com/blog/</loc>
+        <loc>https://modernconvert.vercel.app/blog/</loc>
         <lastmod>2024-12-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://modernconvert.com/blog/image-formats-guide-2024.html</loc>
+        <loc>https://modernconvert.vercel.app/blog/image-formats-guide-2024.html</loc>
         <lastmod>2024-12-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://modernconvert.com/blog/web-performance-image-optimization.html</loc>
+        <loc>https://modernconvert.vercel.app/blog/web-performance-image-optimization.html</loc>
         <lastmod>2024-12-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://modernconvert.com/blog/privacy-first-image-processing.html</loc>
+        <loc>https://modernconvert.vercel.app/blog/privacy-first-image-processing.html</loc>
         <lastmod>2024-12-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://modernconvert.vercel.app/privacy.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://modernconvert.vercel.app/terms.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://modernconvert.vercel.app/help.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
     </url>
 </urlset>

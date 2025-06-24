@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google AdSense Auto Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6516494353796408"
+         crossorigin="anonymous"></script>
+
     <!-- Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V02LGJEFMF"></script>
     <script>
@@ -9,7 +13,6 @@
         gtag('js', new Date());
         gtag('config', 'G-V02LGJEFMF');
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6516494353796408" crossorigin="anonymous"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,32 +28,29 @@
 <body>
     <div class="app">
         <!-- Header -->
-        <!-- Replace the current header section with this -->
-<header class="header">
-    <div class="container">
-        <div class="brand">
-            <h1>
-                <img src="logo.png" alt="ModernConvert" style="height: 40px; vertical-align: middle;">
-                ModernConvert
-            </h1>
-        </div>
-        <nav class="nav">
-    <div class="nav-toggle" id="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <div class="nav-menu" id="nav-menu">
-        <a href="/index.html" class="nav-link">Home</a>
-        <a href="/about.html" class="nav-link">About</a>
-        <a href="/blog/" class="nav-link">Blog</a> 
-        <a href="/privacy.html" class="nav-link">Privacy</a>
-        <a href="/terms.html" class="nav-link">Terms</a>
-        <a href="/help.html" class="nav-link">Help</a>
-    </div>
-</nav>
-    </div>
-</header>
+        <header class="header">
+            <div class="container">
+                <div class="brand">
+                    <span class="logo">🖼️</span>
+                    <h1>ModernConvert</h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-toggle" id="nav-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="nav-menu" id="nav-menu">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="about.html" class="nav-link">About</a>
+                        <a href="blog/" class="nav-link">Blog</a> 
+                        <a href="privacy.html" class="nav-link">Privacy</a>
+                        <a href="terms.html" class="nav-link">Terms</a>
+                        <a href="help.html" class="nav-link">Help</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
 
         <!-- Hero Section -->
         <main class="main">
@@ -61,32 +61,38 @@
                     
                     <!-- Converter Card -->
                     <div class="converter">
-                        <div class="upload-area" id="drop-zone">
-                            <div class="upload-icon">📁</div>
-                            <h3>Drop images here</h3>
-                            <p>or <button class="link-btn" onclick="document.getElementById('file-input').click()">browse files</button></p>
-                            <input type="file" id="file-input" multiple accept="image/*" hidden>
+                        <!-- JPEG XL Highlight Banner -->
+                        <div class="jxl-highlight jxl-live">
+                            <span>🆕</span>
+                            <span>LIVE: Client-Side JPEG XL Support!</span>
+                            <span class="jxl-badge jxl-live-badge">NEW</span>
                         </div>
 
-                        <!-- Replace the current options div with this -->
-<div class="options">
-    <div class="format-options">
-        <label>Convert to:</label>
-        <select id="output-format">
-            <option value="jxl">🆕 JPEG XL (Client-side! 55% smaller)</option>
-            <option value="avif">AVIF (Best compression)</option>
-            <option value="webp">WebP (Great support)</option>
-            <option value="jpeg">JPEG (Universal)</option>
-            <option value="png">PNG (Lossless)</option>
-        </select>
-    </div>
-    <div class="quality-option">
-        <label>Quality: <span id="quality-value">80</span>%</label>
-        <div class="quality-slider-container">
-            <input type="range" id="quality" min="10" max="90" value="80">
-        </div>
-    </div>
-</div>
+                        <div class="upload-area" id="drop-zone">
+                            <span class="upload-icon">📁</span>
+                            <h3>Drop images here</h3>
+                            <p>or <button class="link-btn" onclick="document.getElementById('file-input').click()">browse files</button></p>
+                            <input type="file" id="file-input" multiple accept="image/*,.jxl" hidden>
+                        </div>
+
+                        <div class="options">
+                            <div class="format-options">
+                                <label for="output-format">Convert to:</label>
+                                <select id="output-format">
+                                    <option value="jxl">🆕 JPEG XL (Client-side! 55% smaller)</option>
+                                    <option value="avif">🎯 AVIF (Best compression)</option>
+                                    <option value="webp">🌐 WebP (Great support)</option>
+                                    <option value="jpeg">📷 JPEG (Universal)</option>
+                                    <option value="png">🎨 PNG (Lossless)</option>
+                                </select>
+                            </div>
+                            <div class="quality-option">
+                                <label for="quality">Quality: <span id="quality-value">80</span>%</label>
+                                <div class="quality-slider-container">
+                                    <input type="range" id="quality" min="10" max="90" value="80">
+                                </div>
+                            </div>
+                        </div>
 
                         <div id="file-list" class="file-list"></div>
                         <div id="bulk-controls-container"></div>
@@ -97,184 +103,208 @@
         </main>
 
         <!-- Features -->
-<section class="features">
-    <div class="container">
-        <div class="features-grid">
-            <div class="feature">
-                <span class="feature-icon">🔒</span>
-                <h3>100% Private</h3>
-                <p>No uploads. Processing happens entirely in your browser.</p>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">⚡</span>
-                <h3>Client-Side Processing</h3>
-                <p>Rare client-side JXL support with WebAssembly technology.</p>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">🆓</span>
-                <h3>Always Free</h3>
-                <p>No limits, registration, or hidden costs. Convert unlimited images.</p>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">📱</span>
-                <h3>Works Offline</h3>
-                <p>After loading, works completely offline. Perfect for mobile.</p>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">🎯</span>
-                <h3>Batch Processing</h3>
-                <p>Convert multiple images at once with our bulk conversion feature.</p>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">🌐</span>
-                <h3>Modern Formats</h3>
-                <p>Support for cutting-edge formats like AVIF and JPEG XL.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-        <!-- Replace the entire benefits section with this -->
-<section class="benefits">
-    <div class="container">
-        <div class="benefits-content">
-            <h3>Convert Images Without Compromise</h3>
-            <p class="benefits-subtitle">Most converters force you to upload your images to their servers. We're different.</p>
-            
-            <div class="comparison-cards">
-                <div class="comparison-card other-tools">
-                    <div class="card-header">
-                        <span class="card-icon">😰</span>
-                        <h4>Other Converters</h4>
+        <section class="features">
+            <div class="container">
+                <div class="features-header">
+                    <h2>Why Choose ModernConvert?</h2>
+                    <p>The only converter with true client-side JPEG XL support</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature feature-primary">
+                        <span class="feature-icon">🆕</span>
+                        <h3>JPEG XL Support</h3>
+                        <p>World's first client-side JPEG XL converter. 55% smaller files with better quality!</p>
+                        <div class="feature-badge">NEW!</div>
                     </div>
-                    <ul class="comparison-list">
-                        <li>❌ Upload your private images</li>
-                        <li>❌ Wait for slow server processing</li>
-                        <li>❌ File size limits</li>
-                        <li>❌ Registration required</li>
-                        <li>❌ Premium subscriptions</li>
-                    </ul>
-                </div>
-
-                <div class="comparison-card our-tool">
-                    <div class="card-header">
-                        <span class="card-icon">😎</span>
-                        <h4>ModernConvert</h4>
+                    <div class="feature">
+                        <span class="feature-icon">🔒</span>
+                        <h3>100% Private</h3>
+                        <p>No uploads. Processing happens entirely in your browser using WebAssembly.</p>
                     </div>
-                    <ul class="comparison-list">
-                        <li>✅ Images never leave your device</li>
-                        <li>✅ Instant processing in your browser</li>
-                        <li>✅ No file size limits</li>
-                        <li>✅ No registration needed</li>
-                        <li>✅ Completely free forever</li>
-                    </ul>
+                    <div class="feature">
+                        <span class="feature-icon">⚡</span>
+                        <h3>Lightning Fast</h3>
+                        <p>Instant conversion without waiting for server processing. Works offline too!</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🆓</span>
+                        <h3>Always Free</h3>
+                        <p>No limits, registration, or hidden costs. Convert unlimited images forever.</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🎯</span>
+                        <h3>Batch Processing</h3>
+                        <p>Convert multiple images at once with intelligent queue management.</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📱</span>
+                        <h3>Mobile Optimized</h3>
+                        <p>Perfect touch interface and responsive design for all devices.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="trust-indicators">
-                <div class="trust-item">
-                    <span class="trust-number">100%</span>
-                    <span class="trust-label">Private</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-number">0</span>
-                    <span class="trust-label">Uploads</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-number">∞</span>
-                    <span class="trust-label">File Limit</span>
+                <!-- Format Support -->
+                <div class="formats-section">
+                    <h3>Supported Formats</h3>
+                    <div class="formats-grid">
+                        <div class="format-item format-new">
+                            <span class="format-icon">🆕</span>
+                            <div class="format-name">JPEG XL</div>
+                            <div class="format-desc">Next-gen format</div>
+                        </div>
+                        <div class="format-item">
+                            <span class="format-icon">🎯</span>
+                            <div class="format-name">AVIF</div>
+                            <div class="format-desc">Best compression</div>
+                        </div>
+                        <div class="format-item">
+                            <span class="format-icon">🌐</span>
+                            <div class="format-name">WebP</div>
+                            <div class="format-desc">Great support</div>
+                        </div>
+                        <div class="format-item">
+                            <span class="format-icon">📷</span>
+                            <div class="format-name">JPEG</div>
+                            <div class="format-desc">Universal</div>
+                        </div>
+                        <div class="format-item">
+                            <span class="format-icon">🎨</span>
+                            <div class="format-name">PNG</div>
+                            <div class="format-desc">Lossless</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-        <!-- Replace the current ad-space section with this until AdSense is approved -->
-<div class="ad-space">
-    <div class="container">
-        <div class="ad-placeholder-box">
-            <div class="ad-content">
-                <span class="ad-icon">📢</span>
-                <h3>Advertisement Space</h3>
-                <p>This space will show relevant ads to keep our service free</p>
-                <small>Ads help us maintain this free converter</small>
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <div class="benefits-content">
+                    <h3>Convert Images Without Compromise</h3>
+                    <p class="benefits-subtitle">Most converters force you to upload your images to their servers. We're different.</p>
+                    
+                    <div class="comparison-cards">
+                        <div class="comparison-card">
+                            <div class="card-header">
+                                <span class="card-icon">😰</span>
+                                <h4>Other Converters</h4>
+                            </div>
+                            <ul class="comparison-list">
+                                <li class="feature-no">❌ Upload your private images</li>
+                                <li class="feature-no">❌ Wait for slow server processing</li>
+                                <li class="feature-no">❌ File size limits</li>
+                                <li class="feature-no">❌ Registration required</li>
+                                <li class="feature-no">❌ Premium subscriptions</li>
+                            </ul>
+                        </div>
+
+                        <div class="comparison-card our-tool">
+                            <div class="card-header">
+                                <span class="card-icon">😎</span>
+                                <h4>ModernConvert</h4>
+                            </div>
+                            <ul class="comparison-list">
+                                <li class="feature-yes">✅ Images never leave your device</li>
+                                <li class="feature-yes">✅ Instant processing in your browser</li>
+                                <li class="feature-yes">✅ No file size limits</li>
+                                <li class="feature-yes">✅ No registration needed</li>
+                                <li class="feature-yes">✅ Completely free forever</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <span class="trust-number">100%</span>
+                            <span class="trust-label">Private</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-number">0</span>
+                            <span class="trust-label">Uploads</span>
+                        </div>
+                        <div class="trust-item">
+                            <span class="trust-number">∞</span>
+                            <span class="trust-label">File Limit</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <h3>ModernConvert</h3>
+                        <p>Privacy-first image conversion in your browser</p>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4>Product</h4>
+                            <a href="index.html">Image Converter</a>
+                            <a href="about.html">About</a>
+                            <a href="help.html">Help</a>
+                        </div>
+                        
+                        <div class="footer-column">
+                            <h4>Legal</h4>
+                            <a href="privacy.html">Privacy Policy</a>
+                            <a href="terms.html">Terms of Service</a>
+                        </div>
+                        
+                        <div class="footer-column">
+                            <h4>Support</h4>
+                            <a href="contact.html">Contact</a>
+                            <a href="help.html">FAQ</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 ModernConvert. All rights reserved.</p>
+                    <p>Made with ❤️ for privacy-conscious users</p>
+                </div>
+            </div>
+        </footer>
     </div>
-</div>
 
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="converter.js"></script>
-    <!-- Footer - Add this before closing </div> of .app -->
-        <footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>ModernConvert</h3>
-                <p>Privacy-first image conversion in your browser</p>
-            </div>
-            
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h4>Product</h4>
-                    <a href="/index.html">Image Converter</a>
-                    <a href="/about.html">About</a>
-                    <a href="/help.html">Help</a>
-                </div>
-                
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <a href="/privacy.html">Privacy Policy</a>
-                    <a href="/terms.html">Terms of Service</a>
-                </div>
-                
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <a href="/contact.html">Contact</a>
-                    <a href="/help.html">FAQ</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2025 ModernConvert. All rights reserved.</p>
-            <p>Made with ❤️ for privacy-conscious users</p>
-        </div>
-    </div>
-</footer>
-    </div>
-<script>
-// Mobile Navigation Toggle - Dropdown Style
-document.addEventListener('DOMContentLoaded', function() {
-    const navToggle = document.getElementById('nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
     
-    if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            navToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
+    <!-- Mobile Navigation Toggle -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
         
-        // Close menu when clicking on a link
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
             });
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
-        });
-    }
-});
-</script>
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+            
+            document.addEventListener('click', function(event) {
+                if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
+    });
+    </script>
 </body>
 </html>
